@@ -28,7 +28,7 @@ roughness = 0.5
 [sub_resource type="Environment" id="Night"]
 background_mode = 1
 background_color = Color(0.025, 0.04, 0.065, 1)
-ambient_light_source = 3
+ambient_light_source = 2
 ambient_light_color = Color(0.52, 0.62, 0.76, 1)
 ambient_light_energy = 0.55
 
@@ -210,8 +210,8 @@ material = SubResource("Metal")
 use_collision = true
 
 [node name="Partition202" type="CSGBox3D" parent="Balcony203"]
-position = Vector3(-2.06, 1.2, 6.55)
-size = Vector3(0.08, 2.4, 1.1)
+position = Vector3(-2.06, 0.55, 6.55)
+size = Vector3(0.08, 1.1, 1.1)
 material = SubResource("Wall")
 use_collision = true
 
