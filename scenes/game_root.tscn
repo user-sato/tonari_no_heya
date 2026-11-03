@@ -1,12 +1,45 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/levels/apartment_floor.tscn" id="1_level"]
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scripts/rendering/low_resolution_view.gd" id="3_render"]
+[ext_resource type="Shader" path="res://shaders/ordered_dither.gdshader" id="4_shader"]
 
-[node name="GameRoot" type="Node3D"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dither"]
+shader = ExtResource("4_shader")
 
-[node name="ApartmentFloor" parent="." instance=ExtResource("1_level")]
+[node name="GameRoot" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_render")
 
-[node name="Player" parent="." instance=ExtResource("2_player")]
+[node name="WorldDisplay" type="SubViewportContainer" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_dither")
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 180.0
+
+[node name="WorldView" type="SubViewport" parent="WorldDisplay"]
+size = Vector2i(320, 180)
+render_target_update_mode = 4
+
+[node name="ApartmentFloor" parent="WorldDisplay/WorldView" instance=ExtResource("1_level")]
+
+[node name="Player" parent="WorldDisplay/WorldView" instance=ExtResource("2_player")]
 position = Vector3(0, 0.02, -0.8)
 rotation = Vector3(0, 3.1415927, 0)
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

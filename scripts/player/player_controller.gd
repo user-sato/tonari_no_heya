@@ -18,8 +18,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		get_viewport().set_input_as_handled()
 	elif event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		rotate_y(-event.relative.x * mouse_sensitivity)
-		head.rotation.x = clampf(head.rotation.x - event.relative.y * mouse_sensitivity, -PI / 2.0, PI / 2.0)
+		rotate_y(-event.screen_relative.x * mouse_sensitivity)
+		head.rotation.x = clampf(head.rotation.x - event.screen_relative.y * mouse_sensitivity, -PI / 2.0, PI / 2.0)
 
 
 func _physics_process(delta: float) -> void:

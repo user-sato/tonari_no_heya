@@ -1,11 +1,11 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=23 format=3]
 
 [sub_resource type="StandardMaterial3D" id="Concrete"]
 albedo_color = Color(0.35, 0.39, 0.43, 1)
 roughness = 0.92
 
 [sub_resource type="StandardMaterial3D" id="Wall"]
-albedo_color = Color(0.58, 0.62, 0.64, 1)
+albedo_color = Color(0.30, 0.35, 0.43, 1)
 roughness = 0.94
 
 [sub_resource type="StandardMaterial3D" id="Floor"]
@@ -14,8 +14,8 @@ roughness = 0.92
 
 [sub_resource type="StandardMaterial3D" id="Metal"]
 albedo_color = Color(0.24, 0.29, 0.34, 1)
-metallic = 0.45
-roughness = 0.72
+metallic = 0.12
+roughness = 0.9
 
 [sub_resource type="StandardMaterial3D" id="Furniture"]
 albedo_color = Color(0.30, 0.25, 0.21, 1)
@@ -23,14 +23,72 @@ roughness = 0.9
 
 [sub_resource type="StandardMaterial3D" id="Window"]
 albedo_color = Color(0.08, 0.12, 0.17, 1)
-roughness = 0.5
+roughness = 0.9
 
 [sub_resource type="Environment" id="Night"]
 background_mode = 1
-background_color = Color(0.025, 0.04, 0.065, 1)
+background_color = Color(0.006, 0.009, 0.025, 1)
 ambient_light_source = 2
-ambient_light_color = Color(0.52, 0.62, 0.76, 1)
-ambient_light_energy = 0.55
+ambient_light_color = Color(0.18, 0.23, 0.52, 1)
+ambient_light_energy = 0.22
+
+[sub_resource type="StandardMaterial3D" id="Linen"]
+albedo_color = Color(0.65, 0.66, 0.62, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="Blanket"]
+albedo_color = Color(0.34, 0.4, 0.44, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="Paper"]
+albedo_color = Color(0.72, 0.71, 0.64, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="Cardboard"]
+albedo_color = Color(0.43, 0.37, 0.28, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="BagFabric"]
+albedo_color = Color(0.18, 0.21, 0.23, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="BookBlue"]
+albedo_color = Color(0.27, 0.33, 0.39, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="BookBrown"]
+albedo_color = Color(0.43, 0.31, 0.27, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="Ceramic"]
+albedo_color = Color(0.6, 0.65, 0.64, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="CupInterior"]
+albedo_color = Color(0.21, 0.25, 0.25, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="Sash"]
+albedo_color = Color(0.47, 0.5, 0.51, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="FrostedGlass"]
+albedo_color = Color(0.3, 0.39, 0.43, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="SwitchPlastic"]
+albedo_color = Color(0.69, 0.7, 0.66, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="Trim"]
+albedo_color = Color(0.4, 0.38, 0.34, 1)
+roughness = 0.88
+
+[sub_resource type="BoxShape3D" id="ShelfBounds"]
+size = Vector3(1.1, 1.6, 0.45)
+
+[sub_resource type="BoxShape3D" id="DeskBounds"]
+size = Vector3(1.1, 0.76, 0.65)
 
 [node name="ApartmentFloor" type="Node3D"]
 
@@ -154,8 +212,8 @@ material = SubResource("Wall")
 use_collision = true
 
 [node name="BalconyWallRight" type="CSGBox3D" parent="Room203"]
-position = Vector3(1.45, 1.2, 6)
-size = Vector3(1.3, 2.4, 0.12)
+position = Vector3(1.45, 0.18, 6)
+size = Vector3(1.3, 0.36, 0.12)
 material = SubResource("Wall")
 use_collision = true
 
@@ -165,29 +223,34 @@ size = Vector3(1.6, 0.3, 0.12)
 material = SubResource("Wall")
 use_collision = true
 
-[node name="Shelf" type="CSGBox3D" parent="Room203"]
+[node name="Shelf" type="Node3D" parent="Room203"]
 position = Vector3(-1.42, 0.8, 1.75)
-size = Vector3(1.1, 1.6, 0.45)
-material = SubResource("Furniture")
-use_collision = true
 
-[node name="Desk" type="CSGBox3D" parent="Room203"]
+[node name="Body" type="StaticBody3D" parent="Room203/Shelf"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room203/Shelf/Body"]
+shape = SubResource("ShelfBounds")
+
+[node name="Desk" type="Node3D" parent="Room203"]
 position = Vector3(1.42, 0.38, 2.7)
-size = Vector3(1.1, 0.76, 0.65)
-material = SubResource("Furniture")
-use_collision = true
+
+[node name="Body" type="StaticBody3D" parent="Room203/Desk"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room203/Desk/Body"]
+shape = SubResource("DeskBounds")
 
 [node name="Bed" type="CSGBox3D" parent="Room203"]
-position = Vector3(-1.32, 0.3, 4.65)
-size = Vector3(1.25, 0.6, 1.8)
+position = Vector3(-1.32, 0.18, 4.65)
+size = Vector3(1.25, 0.36, 1.8)
 material = SubResource("Furniture")
 use_collision = true
 
 [node name="RoomLight" type="OmniLight3D" parent="Room203"]
-position = Vector3(0, 2.2, 3)
-light_color = Color(0.72, 0.82, 1, 1)
-light_energy = 1.5
-omni_range = 6.5
+position = Vector3(0.15, 2.2, 3)
+light_color = Color(0.90, 0.82, 0.70, 1)
+light_energy = 0.62
+shadow_enabled = true
+omni_range = 3.9
 
 [node name="Balcony203" type="Node3D" parent="."]
 
@@ -246,3 +309,313 @@ position = Vector3(-4.2, 0.55, 7.06)
 size = Vector3(4.2, 1.1, 0.08)
 material = SubResource("Metal")
 use_collision = true
+
+[node name="Back" type="CSGBox3D" parent="Room203/Shelf"]
+position = Vector3(0, 0, 0.2)
+size = Vector3(1.1, 1.6, 0.05)
+material = SubResource("Furniture")
+
+[node name="LeftSide" type="CSGBox3D" parent="Room203/Shelf"]
+position = Vector3(-0.52, 0, 0)
+size = Vector3(0.06, 1.6, 0.45)
+material = SubResource("Furniture")
+
+[node name="RightSide" type="CSGBox3D" parent="Room203/Shelf"]
+position = Vector3(0.52, 0, 0)
+size = Vector3(0.06, 1.6, 0.45)
+material = SubResource("Furniture")
+
+[node name="Board0" type="CSGBox3D" parent="Room203/Shelf"]
+position = Vector3(0, -0.77, 0)
+size = Vector3(1.04, 0.06, 0.45)
+material = SubResource("Furniture")
+
+[node name="Board1" type="CSGBox3D" parent="Room203/Shelf"]
+position = Vector3(0, -0.29, 0)
+size = Vector3(1.04, 0.06, 0.45)
+material = SubResource("Furniture")
+
+[node name="Board2" type="CSGBox3D" parent="Room203/Shelf"]
+position = Vector3(0, 0.22, 0)
+size = Vector3(1.04, 0.06, 0.45)
+material = SubResource("Furniture")
+
+[node name="Board3" type="CSGBox3D" parent="Room203/Shelf"]
+position = Vector3(0, 0.77, 0)
+size = Vector3(1.04, 0.06, 0.45)
+material = SubResource("Furniture")
+
+[node name="Book0" type="CSGBox3D" parent="Room203/Shelf"]
+position = Vector3(-0.39, 0.395, -0.04)
+size = Vector3(0.055, 0.29, 0.27)
+material = SubResource("BookBlue")
+
+[node name="Book1" type="CSGBox3D" parent="Room203/Shelf"]
+position = Vector3(-0.31, 0.41000000000000003, -0.04)
+size = Vector3(0.055, 0.32, 0.27)
+material = SubResource("Paper")
+
+[node name="Book2" type="CSGBox3D" parent="Room203/Shelf"]
+position = Vector3(-0.24, 0.385, -0.04)
+size = Vector3(0.055, 0.27, 0.27)
+material = SubResource("BookBrown")
+
+[node name="Book3" type="CSGBox3D" parent="Room203/Shelf"]
+position = Vector3(-0.16, 0.4, -0.04)
+size = Vector3(0.055, 0.3, 0.27)
+material = SubResource("BookBlue")
+
+[node name="StorageBox" type="CSGBox3D" parent="Room203/Shelf"]
+position = Vector3(0.2, -0.58, -0.015)
+size = Vector3(0.46, 0.3, 0.33)
+material = SubResource("Cardboard")
+
+[node name="BoxLid" type="CSGBox3D" parent="Room203/Shelf"]
+position = Vector3(0.2, -0.421, -0.015)
+size = Vector3(0.48, 0.025, 0.35)
+material = SubResource("Cardboard")
+
+[node name="FoldedJacket" type="CSGBox3D" parent="Room203/Shelf"]
+position = Vector3(0.16, -0.21, -0.035)
+size = Vector3(0.53, 0.1, 0.31)
+material = SubResource("BagFabric")
+
+[node name="JacketFold" type="CSGBox3D" parent="Room203/Shelf"]
+position = Vector3(0.2, -0.145, -0.015)
+size = Vector3(0.4, 0.035, 0.27)
+material = SubResource("BagFabric")
+
+[node name="Top" type="CSGBox3D" parent="Room203/Desk"]
+position = Vector3(0, 0.34, 0)
+size = Vector3(1.1, 0.08, 0.65)
+material = SubResource("Furniture")
+
+[node name="DrawerPedestal" type="CSGBox3D" parent="Room203/Desk"]
+position = Vector3(0.34, -0.025, 0.02)
+size = Vector3(0.36, 0.63, 0.56)
+material = SubResource("Furniture")
+
+[node name="DrawerFront" type="CSGBox3D" parent="Room203/Desk"]
+position = Vector3(0.34, -0.035, -0.267)
+size = Vector3(0.32, 0.56, 0.025)
+material = SubResource("Trim")
+
+[node name="Leg0" type="CSGBox3D" parent="Room203/Desk"]
+position = Vector3(-0.46, -0.02, -0.25)
+size = Vector3(0.065, 0.68, 0.065)
+material = SubResource("Furniture")
+
+[node name="Leg1" type="CSGBox3D" parent="Room203/Desk"]
+position = Vector3(-0.46, -0.02, 0.25)
+size = Vector3(0.065, 0.68, 0.065)
+material = SubResource("Furniture")
+
+[node name="Crossbar" type="CSGBox3D" parent="Room203/Desk"]
+position = Vector3(-0.46, -0.22, 0)
+size = Vector3(0.055, 0.06, 0.5)
+material = SubResource("Furniture")
+
+[node name="EnvelopeLower" type="CSGBox3D" parent="Room203/Desk"]
+position = Vector3(-0.13, 0.389, -0.055)
+size = Vector3(0.3, 0.012, 0.2)
+material = SubResource("Paper")
+rotation = Vector3(0, 0.08, 0)
+
+[node name="EnvelopeUpper" type="CSGBox3D" parent="Room203/Desk"]
+position = Vector3(-0.105, 0.403, -0.06)
+size = Vector3(0.26, 0.012, 0.18)
+material = SubResource("Paper")
+rotation = Vector3(0, -0.1, 0)
+
+[node name="Mug" type="CSGCylinder3D" parent="Room203/Desk"]
+position = Vector3(0.32, 0.45, 0.16)
+radius = 0.054
+height = 0.14
+sides = 8
+material = SubResource("Ceramic")
+
+[node name="MugOpening" type="CSGCylinder3D" parent="Room203/Desk"]
+position = Vector3(0.32, 0.5205, 0.16)
+radius = 0.043
+height = 0.002
+sides = 8
+material = SubResource("CupInterior")
+
+[node name="Mattress" type="CSGBox3D" parent="Room203"]
+position = Vector3(-1.32, 0.43, 4.65)
+size = Vector3(1.21, 0.14, 1.76)
+material = SubResource("Linen")
+use_collision = true
+
+[node name="Headboard" type="CSGBox3D" parent="Room203"]
+position = Vector3(-1.32, 0.41, 5.54)
+size = Vector3(1.25, 0.62, 0.055)
+material = SubResource("Furniture")
+use_collision = true
+
+[node name="Pillow" type="CSGBox3D" parent="Room203"]
+position = Vector3(-1.36, 0.56, 5.2)
+size = Vector3(0.77, 0.12, 0.37)
+material = SubResource("Linen")
+
+[node name="FoldedDuvet" type="CSGBox3D" parent="Room203"]
+position = Vector3(-1.3, 0.57, 4.15)
+size = Vector3(1.09, 0.14, 0.56)
+material = SubResource("Blanket")
+
+[node name="DuvetTopFold" type="CSGBox3D" parent="Room203"]
+position = Vector3(-1.3, 0.655, 4.18)
+size = Vector3(1.07, 0.04, 0.49)
+material = SubResource("Blanket")
+
+[node name="WorkBag" type="CSGBox3D" parent="Room203"]
+position = Vector3(1.78, 0.21, 1.17)
+size = Vector3(0.22, 0.42, 0.48)
+material = SubResource("BagFabric")
+use_collision = true
+
+[node name="BagHandlePost105" type="CSGBox3D" parent="Room203"]
+position = Vector3(1.78, 0.46, 1.05)
+size = Vector3(0.023, 0.1, 0.024)
+material = SubResource("BagFabric")
+
+[node name="BagHandlePost129" type="CSGBox3D" parent="Room203"]
+position = Vector3(1.78, 0.46, 1.29)
+size = Vector3(0.023, 0.1, 0.024)
+material = SubResource("BagFabric")
+
+[node name="BagHandleGrip" type="CSGBox3D" parent="Room203"]
+position = Vector3(1.78, 0.514, 1.17)
+size = Vector3(0.025, 0.025, 0.27)
+material = SubResource("BagFabric")
+
+[node name="SwitchPlate" type="CSGBox3D" parent="Room203"]
+position = Vector3(0.82, 1.23, 0.078)
+size = Vector3(0.09, 0.15, 0.023)
+material = SubResource("SwitchPlastic")
+
+[node name="SwitchRocker" type="CSGBox3D" parent="Room203"]
+position = Vector3(0.82, 1.24, 0.094)
+size = Vector3(0.054, 0.076, 0.012)
+material = SubResource("Linen")
+
+[node name="SkirtingShared" type="CSGBox3D" parent="Room203"]
+position = Vector3(-2.025, 0.055, 3)
+size = Vector3(0.03, 0.11, 5.86)
+material = SubResource("Trim")
+
+[node name="SkirtingOuter" type="CSGBox3D" parent="Room203"]
+position = Vector3(2.025, 0.055, 3)
+size = Vector3(0.03, 0.11, 5.86)
+material = SubResource("Trim")
+
+[node name="EntryThreshold" type="CSGBox3D" parent="Room203"]
+position = Vector3(0, 0.008, 0.09)
+size = Vector3(1.2, 0.016, 0.13)
+material = SubResource("Trim")
+
+[node name="CeilingFixture" type="CSGCylinder3D" parent="Room203"]
+position = Vector3(0.15, 2.37, 3)
+radius = 0.26
+height = 0.055
+sides = 8
+material = SubResource("SwitchPlastic")
+
+[node name="CeilingDiffuser" type="CSGCylinder3D" parent="Room203"]
+position = Vector3(0.15, 2.335, 3)
+radius = 0.22
+height = 0.025
+sides = 8
+material = SubResource("Linen")
+
+[node name="BalconyRightJamb" type="CSGBox3D" parent="Room203"]
+position = Vector3(2.01, 1.2, 6)
+size = Vector3(0.18, 2.4, 0.12)
+material = SubResource("Wall")
+use_collision = true
+
+[node name="BalconyWindowHeader" type="CSGBox3D" parent="Room203"]
+position = Vector3(1.4, 2.25, 6)
+size = Vector3(1.2, 0.3, 0.12)
+material = SubResource("Wall")
+use_collision = true
+
+[node name="SashLeftJamb" type="CSGBox3D" parent="Room203"]
+position = Vector3(-0.785, 1.04, 5.96)
+size = Vector3(0.03, 2.08, 0.1)
+material = SubResource("Sash")
+use_collision = true
+
+[node name="SashRightJamb" type="CSGBox3D" parent="Room203"]
+position = Vector3(1.91, 1.04, 5.96)
+size = Vector3(0.04, 2.08, 0.1)
+material = SubResource("Sash")
+use_collision = true
+
+[node name="SashTopTrack" type="CSGBox3D" parent="Room203"]
+position = Vector3(0.57, 2.075, 5.96)
+size = Vector3(2.73, 0.05, 0.11)
+material = SubResource("Sash")
+use_collision = true
+
+[node name="SashBottomTrack" type="CSGBox3D" parent="Room203"]
+position = Vector3(0.57, 0.013, 5.96)
+size = Vector3(2.73, 0.026, 0.11)
+material = SubResource("Sash")
+
+[node name="FrostedFixedPane" type="CSGBox3D" parent="Room203"]
+position = Vector3(1.36, 1.22, 6.015)
+size = Vector3(1.04, 1.7, 0.035)
+material = SubResource("FrostedGlass")
+use_collision = true
+
+[node name="ParkedSlidingPane" type="CSGBox3D" parent="Room203"]
+position = Vector3(1.36, 1.065, 5.92)
+size = Vector3(1.04, 1.98, 0.025)
+material = SubResource("FrostedGlass")
+use_collision = true
+
+[node name="SlidingLeft" type="CSGBox3D" parent="Room203"]
+position = Vector3(0.825, 1.065, 5.91)
+size = Vector3(0.045, 2.06, 0.055)
+material = SubResource("Sash")
+use_collision = true
+
+[node name="SlidingRight" type="CSGBox3D" parent="Room203"]
+position = Vector3(1.895, 1.065, 5.91)
+size = Vector3(0.045, 2.06, 0.055)
+material = SubResource("Sash")
+use_collision = true
+
+[node name="SlidingTop" type="CSGBox3D" parent="Room203"]
+position = Vector3(1.36, 2.07, 5.91)
+size = Vector3(1.11, 0.045, 0.055)
+material = SubResource("Sash")
+use_collision = true
+
+[node name="SlidingBottom" type="CSGBox3D" parent="Room203"]
+position = Vector3(1.36, 0.06, 5.91)
+size = Vector3(1.11, 0.045, 0.055)
+material = SubResource("Sash")
+use_collision = true
+
+[node name="SlidingMidrail" type="CSGBox3D" parent="Room203"]
+position = Vector3(1.36, 0.88, 5.89)
+size = Vector3(1.11, 0.045, 0.055)
+material = SubResource("Sash")
+use_collision = true
+
+[node name="SlidingHandle" type="CSGBox3D" parent="Room203"]
+position = Vector3(0.865, 1.16, 5.865)
+size = Vector3(0.035, 0.15, 0.025)
+material = SubResource("Sash")
+use_collision = true
+
+[node name="MugHandle" type="CSGTorus3D" parent="Room203/Desk"]
+position = Vector3(0.378, 0.45, 0.16)
+rotation = Vector3(1.5707963, 0, 0)
+inner_radius = 0.022
+outer_radius = 0.044
+sides = 6
+ring_sides = 4
+material = SubResource("Ceramic")
