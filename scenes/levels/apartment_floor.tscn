@@ -1,0 +1,248 @@
+[gd_scene load_steps=8 format=3]
+
+[sub_resource type="StandardMaterial3D" id="Concrete"]
+albedo_color = Color(0.35, 0.39, 0.43, 1)
+roughness = 0.92
+
+[sub_resource type="StandardMaterial3D" id="Wall"]
+albedo_color = Color(0.58, 0.62, 0.64, 1)
+roughness = 0.94
+
+[sub_resource type="StandardMaterial3D" id="Floor"]
+albedo_color = Color(0.36, 0.32, 0.28, 1)
+roughness = 0.92
+
+[sub_resource type="StandardMaterial3D" id="Metal"]
+albedo_color = Color(0.24, 0.29, 0.34, 1)
+metallic = 0.45
+roughness = 0.72
+
+[sub_resource type="StandardMaterial3D" id="Furniture"]
+albedo_color = Color(0.30, 0.25, 0.21, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Window"]
+albedo_color = Color(0.08, 0.12, 0.17, 1)
+roughness = 0.5
+
+[sub_resource type="Environment" id="Night"]
+background_mode = 1
+background_color = Color(0.025, 0.04, 0.065, 1)
+ambient_light_source = 3
+ambient_light_color = Color(0.52, 0.62, 0.76, 1)
+ambient_light_energy = 0.55
+
+[node name="ApartmentFloor" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Night")
+
+[node name="Corridor" type="Node3D" parent="."]
+
+[node name="Floor" type="CSGBox3D" parent="Corridor"]
+position = Vector3(-2.1, -0.1, -0.8)
+size = Vector3(8.4, 0.2, 1.6)
+material = SubResource("Concrete")
+use_collision = true
+
+[node name="Ceiling" type="CSGBox3D" parent="Corridor"]
+position = Vector3(-2.1, 2.5, -0.8)
+size = Vector3(8.4, 0.2, 1.6)
+material = SubResource("Concrete")
+use_collision = true
+
+[node name="OuterRail" type="CSGBox3D" parent="Corridor"]
+position = Vector3(-2.1, 0.55, -1.58)
+size = Vector3(8.4, 1.1, 0.08)
+material = SubResource("Metal")
+use_collision = true
+
+[node name="LeftEnd" type="CSGBox3D" parent="Corridor"]
+position = Vector3(-6.26, 1.2, -0.8)
+size = Vector3(0.08, 2.4, 1.6)
+material = SubResource("Concrete")
+use_collision = true
+
+[node name="RightEnd" type="CSGBox3D" parent="Corridor"]
+position = Vector3(2.06, 1.2, -0.8)
+size = Vector3(0.08, 2.4, 1.6)
+material = SubResource("Concrete")
+use_collision = true
+
+[node name="Facade202" type="CSGBox3D" parent="Corridor"]
+position = Vector3(-4.2, 1.2, 0)
+size = Vector3(4.2, 2.4, 0.12)
+material = SubResource("Wall")
+use_collision = true
+
+[node name="Door202" type="CSGBox3D" parent="Corridor"]
+position = Vector3(-4.2, 1.02, -0.09)
+size = Vector3(0.9, 2.04, 0.08)
+material = SubResource("Metal")
+use_collision = true
+
+[node name="Number202" type="Label3D" parent="Corridor"]
+position = Vector3(-4.2, 1.75, -0.145)
+rotation = Vector3(0, 3.1415927, 0)
+text = "202"
+font_size = 48
+pixel_size = 0.004
+modulate = Color(0.9, 0.92, 0.93, 1)
+
+[node name="Facade203Left" type="CSGBox3D" parent="Corridor"]
+position = Vector3(-1.35, 1.2, 0)
+size = Vector3(1.5, 2.4, 0.12)
+material = SubResource("Wall")
+use_collision = true
+
+[node name="Facade203Right" type="CSGBox3D" parent="Corridor"]
+position = Vector3(1.35, 1.2, 0)
+size = Vector3(1.5, 2.4, 0.12)
+material = SubResource("Wall")
+use_collision = true
+
+[node name="EntryLintel" type="CSGBox3D" parent="Corridor"]
+position = Vector3(0, 2.25, 0)
+size = Vector3(1.2, 0.3, 0.12)
+material = SubResource("Wall")
+use_collision = true
+
+[node name="Number203" type="Label3D" parent="Corridor"]
+position = Vector3(0.95, 1.85, -0.075)
+rotation = Vector3(0, 3.1415927, 0)
+text = "203"
+font_size = 48
+pixel_size = 0.004
+modulate = Color(0.9, 0.92, 0.93, 1)
+
+[node name="CorridorLight" type="OmniLight3D" parent="Corridor"]
+position = Vector3(-2.1, 2.25, -0.8)
+light_color = Color(0.72, 0.82, 1, 1)
+light_energy = 1.35
+omni_range = 6.0
+
+[node name="Room203" type="Node3D" parent="."]
+
+[node name="Floor" type="CSGBox3D" parent="Room203"]
+position = Vector3(0, -0.1, 3)
+size = Vector3(4.2, 0.2, 6)
+material = SubResource("Floor")
+use_collision = true
+
+[node name="Ceiling" type="CSGBox3D" parent="Room203"]
+position = Vector3(0, 2.5, 3)
+size = Vector3(4.2, 0.2, 6)
+material = SubResource("Wall")
+use_collision = true
+
+[node name="SharedWall" type="CSGBox3D" parent="Room203"]
+position = Vector3(-2.1, 1.2, 3)
+size = Vector3(0.12, 2.4, 6)
+material = SubResource("Wall")
+use_collision = true
+
+[node name="OuterWall" type="CSGBox3D" parent="Room203"]
+position = Vector3(2.1, 1.2, 3)
+size = Vector3(0.12, 2.4, 6)
+material = SubResource("Wall")
+use_collision = true
+
+[node name="BalconyWallLeft" type="CSGBox3D" parent="Room203"]
+position = Vector3(-1.45, 1.2, 6)
+size = Vector3(1.3, 2.4, 0.12)
+material = SubResource("Wall")
+use_collision = true
+
+[node name="BalconyWallRight" type="CSGBox3D" parent="Room203"]
+position = Vector3(1.45, 1.2, 6)
+size = Vector3(1.3, 2.4, 0.12)
+material = SubResource("Wall")
+use_collision = true
+
+[node name="BalconyLintel" type="CSGBox3D" parent="Room203"]
+position = Vector3(0, 2.25, 6)
+size = Vector3(1.6, 0.3, 0.12)
+material = SubResource("Wall")
+use_collision = true
+
+[node name="Shelf" type="CSGBox3D" parent="Room203"]
+position = Vector3(-1.42, 0.8, 1.75)
+size = Vector3(1.1, 1.6, 0.45)
+material = SubResource("Furniture")
+use_collision = true
+
+[node name="Desk" type="CSGBox3D" parent="Room203"]
+position = Vector3(1.42, 0.38, 2.7)
+size = Vector3(1.1, 0.76, 0.65)
+material = SubResource("Furniture")
+use_collision = true
+
+[node name="Bed" type="CSGBox3D" parent="Room203"]
+position = Vector3(-1.32, 0.3, 4.65)
+size = Vector3(1.25, 0.6, 1.8)
+material = SubResource("Furniture")
+use_collision = true
+
+[node name="RoomLight" type="OmniLight3D" parent="Room203"]
+position = Vector3(0, 2.2, 3)
+light_color = Color(0.72, 0.82, 1, 1)
+light_energy = 1.5
+omni_range = 6.5
+
+[node name="Balcony203" type="Node3D" parent="."]
+
+[node name="Floor" type="CSGBox3D" parent="Balcony203"]
+position = Vector3(0, -0.1, 6.55)
+size = Vector3(4.2, 0.2, 1.1)
+material = SubResource("Concrete")
+use_collision = true
+
+[node name="Rail" type="CSGBox3D" parent="Balcony203"]
+position = Vector3(0, 0.55, 7.06)
+size = Vector3(4.2, 1.1, 0.08)
+material = SubResource("Metal")
+use_collision = true
+
+[node name="RightEnd" type="CSGBox3D" parent="Balcony203"]
+position = Vector3(2.06, 0.6, 6.55)
+size = Vector3(0.08, 1.2, 1.1)
+material = SubResource("Metal")
+use_collision = true
+
+[node name="Partition202" type="CSGBox3D" parent="Balcony203"]
+position = Vector3(-2.06, 1.2, 6.55)
+size = Vector3(0.08, 2.4, 1.1)
+material = SubResource("Wall")
+use_collision = true
+
+[node name="BalconyLight" type="OmniLight3D" parent="Balcony203"]
+position = Vector3(0, 2.15, 6.5)
+light_color = Color(0.72, 0.82, 1, 1)
+light_energy = 0.65
+omni_range = 3.5
+
+[node name="Exterior202" type="Node3D" parent="."]
+
+[node name="Facade" type="CSGBox3D" parent="Exterior202"]
+position = Vector3(-4.2, 1.2, 6)
+size = Vector3(4.2, 2.4, 0.12)
+material = SubResource("Wall")
+use_collision = true
+
+[node name="Window" type="CSGBox3D" parent="Exterior202"]
+position = Vector3(-4.2, 1.25, 6.08)
+size = Vector3(1.65, 1.5, 0.08)
+material = SubResource("Window")
+use_collision = true
+
+[node name="BalconySlab" type="CSGBox3D" parent="Exterior202"]
+position = Vector3(-4.2, -0.1, 6.55)
+size = Vector3(4.2, 0.2, 1.1)
+material = SubResource("Concrete")
+use_collision = true
+
+[node name="BalconyRail" type="CSGBox3D" parent="Exterior202"]
+position = Vector3(-4.2, 0.55, 7.06)
+size = Vector3(4.2, 1.1, 0.08)
+material = SubResource("Metal")
+use_collision = true
