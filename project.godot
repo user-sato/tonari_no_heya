@@ -7,6 +7,10 @@ config_version=5
 config/name="となりの部屋"
 run/main_scene="res://scenes/game_root.tscn"
 
+[autoload]
+
+GameState="*res://scripts/autoload/game_state.gd"
+
 [display]
 
 window/size/viewport_width=1280
@@ -33,6 +37,14 @@ move_right={
 toggle_mouse_capture={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"physical_keycode":4194305)]
+}
+interact={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":69)]
+}
+toggle_notebook={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":4194308)]
 }
 
 [rendering]

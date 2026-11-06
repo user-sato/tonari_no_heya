@@ -4,6 +4,7 @@ extends CharacterBody3D
 @export var mouse_sensitivity: float = 0.002
 
 @onready var head: Node3D = $Head
+var input_enabled: bool = true
 
 
 func _ready() -> void:
@@ -11,6 +12,8 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not input_enabled:
+		return
 	if event.is_action_pressed("toggle_mouse_capture") and not event.is_echo():
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -26,8 +29,17 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-	var input_direction := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+	var input_direction := Vector2.ZERO
+	if input_enabled:
+		input_direction = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var direction := (transform.basis * Vector3(input_direction.x, 0.0, input_direction.y)).normalized()
 	velocity.x = direction.x * walk_speed
 	velocity.z = direction.z * walk_speed
 	move_and_slide()
+
+
+func set_input_enabled(value: bool) -> void:
+	input_enabled = value
+	if not value:
+		velocity.x = 0.0
+		velocity.z = 0.0
