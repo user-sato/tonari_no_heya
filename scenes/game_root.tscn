@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/levels/apartment_floor.tscn" id="1_level"]
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_player"]
@@ -6,6 +6,8 @@
 [ext_resource type="Shader" path="res://shaders/ordered_dither.gdshader" id="4_shader"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="5_hud"]
 [ext_resource type="Script" path="res://scripts/systems/m1_director.gd" id="6_director"]
+[ext_resource type="Script" path="res://scripts/systems/day1_audio_director.gd" id="7_audio"]
+[ext_resource type="Script" path="res://scripts/systems/day1_sequence.gd" id="8_day1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dither"]
 shader = ExtResource("4_shader")
@@ -37,7 +39,13 @@ render_target_update_mode = 4
 position = Vector3(0, 0.02, -0.8)
 rotation = Vector3(0, 3.1415927, 0)
 
+[node name="Day1AudioDirector" type="Node3D" parent="WorldDisplay/WorldView"]
+script = ExtResource("7_audio")
+
 [node name="HUD" parent="." instance=ExtResource("5_hud")]
 
 [node name="M1Director" type="Node" parent="."]
 script = ExtResource("6_director")
+
+[node name="Day1Sequence" type="Node" parent="."]
+script = ExtResource("8_day1")

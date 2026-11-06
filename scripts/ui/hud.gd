@@ -9,7 +9,13 @@ var _mode := ""
 var _pages: Array[Dictionary] = []
 var _page_index := 0
 var _message_serial := 0
+var _subtitle_serial := 0
+var _fade_serial := 0
+var _sequence_text := ""
+var _notebook_enabled := true
+var _root: Control
 var _prompt: Label
+var _sequence_prompt: Label
 var _crosshair: Label
 var _message: Label
 var _shade: ColorRect
@@ -18,15 +24,86 @@ var _body: Label
 var _counter: Label
 var _hint: Label
 var _list: ItemList
+var _subtitle: Label
+var _fade: ColorRect
+var _day_end: Label
 
 
 func _ready() -> void:
 	_build_ui()
+	get_viewport().size_changed.connect(_sync_root_size)
+	_sync_root_size()
+
+
+func _sync_root_size() -> void:
+	_root.size = get_viewport().get_visible_rect().size
 
 
 func set_interaction_prompt(text: String) -> void:
 	_prompt.text = "[E] " + text if not text.is_empty() else ""
-	_prompt.visible = not text.is_empty() and _mode.is_empty()
+	_update_prompt()
+
+
+func set_notebook_enabled(enabled: bool) -> void:
+	_notebook_enabled = enabled
+
+
+func set_sequence_prompt(text: String) -> void:
+	_sequence_text = text
+	_update_prompt()
+
+
+func clear_sequence_prompt() -> void:
+	set_sequence_prompt("")
+
+
+func _update_prompt() -> void:
+	_prompt.visible = _mode.is_empty() and (not _sequence_text.is_empty() or not _prompt.text.is_empty())
+	_sequence_prompt.text = _sequence_text
+	_sequence_prompt.visible = _mode.is_empty() and not _sequence_text.is_empty()
+	_prompt.visible = _prompt.visible and _sequence_text.is_empty()
+
+
+func show_subtitle(text: String, duration: float = 2.5) -> void:
+	_subtitle_serial += 1
+	var serial := _subtitle_serial
+	_subtitle.text = text
+	_subtitle.visible = not text.is_empty()
+	if not text.is_empty():
+		await get_tree().create_timer(maxf(duration, 0.0)).timeout
+		if serial == _subtitle_serial:
+			_subtitle.hide()
+
+
+func fade_to_black(duration: float) -> void:
+	await _fade_to(1.0, duration)
+
+
+func fade_from_black(duration: float) -> void:
+	await _fade_to(0.0, duration)
+
+
+func _fade_to(target: float, duration: float) -> void:
+	_fade_serial += 1
+	var serial := _fade_serial
+	var start := _fade.color.a
+	if duration <= 0.0:
+		_fade.color.a = target
+		return
+	var elapsed := 0.0
+	while elapsed < duration and serial == _fade_serial:
+		await get_tree().process_frame
+		elapsed += get_process_delta_time()
+		if serial == _fade_serial:
+			_fade.color.a = lerpf(start, target, minf(elapsed / duration, 1.0))
+
+
+func show_day_end() -> void:
+	_day_end.show()
+
+
+func hide_day_end() -> void:
+	_day_end.hide()
 
 
 func show_message(text: String) -> void:
@@ -65,7 +142,7 @@ func close_overlay() -> void:
 	_mode = ""
 	_shade.hide()
 	_crosshair.show()
-	_prompt.visible = not _prompt.text.is_empty()
+	_update_prompt()
 	overlay_closed.emit()
 
 
@@ -79,6 +156,7 @@ func _open(mode: String) -> void:
 	_shade.show()
 	_crosshair.hide()
 	_prompt.hide()
+	_sequence_prompt.hide()
 	_message.hide()
 	_list.visible = mode == "notebook"
 	_hint.text = "Esc / Tab  閉じる" if mode == "notebook" else "クリック / ← →  ページをめくる     Esc  閉じる"
@@ -110,7 +188,7 @@ func _input(event: InputEvent) -> void:
 		if event.is_action_pressed("toggle_notebook"):
 			if _mode == "notebook":
 				close_overlay()
-			elif _mode.is_empty():
+			elif _mode.is_empty() and _notebook_enabled:
 				notebook_requested.emit()
 			get_viewport().set_input_as_handled()
 			return
@@ -149,7 +227,8 @@ func _label(parent: Node, font_size: int, color: Color) -> Label:
 
 func _build_ui() -> void:
 	var root := Control.new()
-	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_root = root
+	root.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(root)
 	_crosshair = _label(root, 16, Color(1, 1, 1, 0.75))
@@ -165,6 +244,12 @@ func _build_ui() -> void:
 	_prompt.position = Vector2(-250, 25)
 	_prompt.size = Vector2(500, 32)
 	_prompt.hide()
+	_sequence_prompt = _label(root, 18, Color(1, 1, 1, 0.85))
+	_sequence_prompt.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_sequence_prompt.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	_sequence_prompt.position = Vector2(-250, 25)
+	_sequence_prompt.size = Vector2(500, 32)
+	_sequence_prompt.hide()
 	_message = _label(root, 22, Color.WHITE)
 	_message.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_message.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
@@ -212,3 +297,28 @@ func _build_ui() -> void:
 	_hint = _label(column, 15, Color(0.7, 0.7, 0.68))
 	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_shade.hide()
+
+	# These controls are above the document overlay and use viewport-relative bounds.
+	_subtitle = _label(root, 22, Color.WHITE)
+	_subtitle.anchor_left = 0.08
+	_subtitle.anchor_right = 0.92
+	_subtitle.anchor_top = 0.72
+	_subtitle.anchor_bottom = 0.82
+	_subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_subtitle.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_subtitle.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 1))
+	_subtitle.add_theme_constant_override("shadow_offset_x", 2)
+	_subtitle.add_theme_constant_override("shadow_offset_y", 2)
+	_subtitle.hide()
+	_fade = ColorRect.new()
+	_fade.color = Color(0, 0, 0, 0)
+	_fade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.add_child(_fade)
+	_day_end = _label(root, 30, Color.WHITE)
+	_day_end.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_day_end.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_day_end.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_day_end.text = "一日目 終了"
+	_day_end.hide()

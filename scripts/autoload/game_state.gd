@@ -17,6 +17,7 @@ func set_flag(flag_name: StringName, value: bool = true) -> void:
 	if has_flag(flag_name) == value:
 		return
 	flags[flag_name] = value
+	print("[GameState] flag %s = %s" % [flag_name, value])
 	flag_changed.emit(flag_name, value)
 
 
@@ -27,6 +28,7 @@ func mark_document_read(document: Dictionary) -> void:
 	if not read_documents.has(document_id):
 		read_document_order.append(document_id)
 	read_documents[document_id] = document.duplicate(true)
+	print("[GameState] document read: %s" % document_id)
 	document_read.emit(document_id)
 
 

@@ -43,8 +43,12 @@ func _on_interaction_requested(target: Interactable) -> void:
 		&"desk_mail":
 			_inspect_mail()
 		&"door_202":
-			game_state.set_flag(&"door_202_examined")
-			hud.show_message("返事はない。鍵が掛かっている。")
+			if game_state.has_flag(&"first_knock_heard"):
+				game_state.set_flag(&"neighbor_door_checked")
+				hud.show_message("扉をノックした。返事はない。")
+			else:
+				game_state.set_flag(&"door_202_examined")
+				hud.show_message("返事はない。鍵が掛かっている。")
 
 
 func _collect_mail() -> void:
@@ -85,6 +89,8 @@ func _on_overlay_opened() -> void:
 
 
 func _on_overlay_closed() -> void:
+	if game_state.has_flag(&"sleep_sequence_started") or game_state.has_flag(&"day1_complete"):
+		return
 	player.set_input_enabled(true)
 	interaction_ray.set_interaction_enabled(true)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

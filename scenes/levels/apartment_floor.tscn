@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3]
+[gd_scene load_steps=27 format=3]
 
 [ext_resource type="Script" path="res://scripts/interaction/interactable.gd" id="1_interactable"]
 
@@ -94,6 +94,13 @@ size = Vector3(1.1, 0.76, 0.65)
 
 [sub_resource type="BoxShape3D" id="MailboxBounds"]
 size = Vector3(0.46, 0.38, 0.24)
+
+[sub_resource type="BoxShape3D" id="BalconyVisitBounds"]
+size = Vector3(3.95, 2.2, 0.65)
+
+[sub_resource type="StandardMaterial3D" id="DeepShadow"]
+albedo_color = Color(0.022, 0.028, 0.036, 1)
+roughness = 1.0
 
 [node name="ApartmentFloor" type="Node3D"]
 
@@ -315,8 +322,14 @@ enabled = false
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Room203/Desk/Body"]
 shape = SubResource("DeskBounds")
 
-[node name="Bed" type="CSGBox3D" parent="Room203"]
+[node name="Bed" type="Node3D" parent="Room203"]
 position = Vector3(-1.32, 0.18, 4.65)
+script = ExtResource("1_interactable")
+interaction_id = &"bed_sleep"
+prompt_text = "眠る"
+enabled = false
+
+[node name="Frame" type="CSGBox3D" parent="Room203/Bed"]
 size = Vector3(1.25, 0.36, 1.8)
 material = SubResource("Furniture")
 use_collision = true
@@ -329,6 +342,16 @@ shadow_enabled = true
 omni_range = 3.9
 
 [node name="Balcony203" type="Node3D" parent="."]
+
+[node name="VisitTrigger" type="Area3D" parent="Balcony203"]
+position = Vector3(0, 1.1, 6.55)
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Balcony203/VisitTrigger"]
+shape = SubResource("BalconyVisitBounds")
 
 [node name="Floor" type="CSGBox3D" parent="Balcony203"]
 position = Vector3(0, -0.1, 6.55)
@@ -520,30 +543,30 @@ height = 0.002
 sides = 8
 material = SubResource("CupInterior")
 
-[node name="Mattress" type="CSGBox3D" parent="Room203"]
-position = Vector3(-1.32, 0.43, 4.65)
+[node name="Mattress" type="CSGBox3D" parent="Room203/Bed"]
+position = Vector3(0, 0.25, 0)
 size = Vector3(1.21, 0.14, 1.76)
 material = SubResource("Linen")
 use_collision = true
 
-[node name="Headboard" type="CSGBox3D" parent="Room203"]
-position = Vector3(-1.32, 0.41, 5.54)
+[node name="Headboard" type="CSGBox3D" parent="Room203/Bed"]
+position = Vector3(0, 0.23, 0.89)
 size = Vector3(1.25, 0.62, 0.055)
 material = SubResource("Furniture")
 use_collision = true
 
-[node name="Pillow" type="CSGBox3D" parent="Room203"]
-position = Vector3(-1.36, 0.56, 5.2)
+[node name="Pillow" type="CSGBox3D" parent="Room203/Bed"]
+position = Vector3(-0.04, 0.38, 0.55)
 size = Vector3(0.77, 0.12, 0.37)
 material = SubResource("Linen")
 
-[node name="FoldedDuvet" type="CSGBox3D" parent="Room203"]
-position = Vector3(-1.3, 0.57, 4.15)
+[node name="FoldedDuvet" type="CSGBox3D" parent="Room203/Bed"]
+position = Vector3(0.02, 0.39, -0.5)
 size = Vector3(1.09, 0.14, 0.56)
 material = SubResource("Blanket")
 
-[node name="DuvetTopFold" type="CSGBox3D" parent="Room203"]
-position = Vector3(-1.3, 0.655, 4.18)
+[node name="DuvetTopFold" type="CSGBox3D" parent="Room203/Bed"]
+position = Vector3(0.02, 0.475, -0.47)
 size = Vector3(1.07, 0.04, 0.49)
 material = SubResource("Blanket")
 
@@ -698,3 +721,63 @@ outer_radius = 0.044
 sides = 6
 ring_sides = 4
 material = SubResource("Ceramic")
+
+[node name="ContractFile" type="CSGBox3D" parent="Room203"]
+position = Vector3(1.72, 0.765, 2.52)
+size = Vector3(0.38, 0.01, 0.27)
+material = SubResource("Cardboard")
+use_collision = true
+script = ExtResource("1_interactable")
+interaction_id = &"contract_file"
+prompt_text = "契約書を調べる"
+enabled = false
+
+[node name="PaperEdges" type="CSGBox3D" parent="Room203/ContractFile"]
+position = Vector3(-0.006, 0.018, -0.005)
+size = Vector3(0.355, 0.03, 0.255)
+material = SubResource("Paper")
+
+[node name="Cover" type="CSGBox3D" parent="Room203/ContractFile"]
+position = Vector3(0, 0.037, 0)
+size = Vector3(0.38, 0.008, 0.27)
+material = SubResource("Cardboard")
+
+[node name="Spine" type="CSGBox3D" parent="Room203/ContractFile"]
+position = Vector3(0.178, 0.018, 0)
+size = Vector3(0.024, 0.04, 0.27)
+material = SubResource("BookBrown")
+
+[node name="Title" type="Label3D" parent="Room203/ContractFile"]
+position = Vector3(-0.015, 0.042, -0.005)
+rotation = Vector3(-1.5707963, 0, 0)
+text = "契約書"
+font_size = 36
+pixel_size = 0.0015
+modulate = Color(0.13, 0.14, 0.14, 1)
+outline_size = 0
+
+[node name="Phone" type="CSGBox3D" parent="Room203"]
+position = Vector3(1.04, 0.787, 2.82)
+size = Vector3(0.16, 0.054, 0.27)
+material = SubResource("BagFabric")
+use_collision = true
+script = ExtResource("1_interactable")
+interaction_id = &"phone_call"
+prompt_text = "管理会社へ連絡する"
+enabled = false
+
+[node name="Screen" type="CSGBox3D" parent="Room203/Phone"]
+position = Vector3(0, 0.029, -0.005)
+size = Vector3(0.128, 0.006, 0.2)
+material = SubResource("Window")
+
+[node name="Speaker" type="CSGBox3D" parent="Room203/Phone"]
+position = Vector3(0, 0.029, 0.112)
+size = Vector3(0.045, 0.006, 0.009)
+material = SubResource("Metal")
+
+[node name="OddityShadow" type="CSGBox3D" parent="Exterior202"]
+visible = false
+position = Vector3(-3.66, 1.3, 6.128)
+size = Vector3(0.55, 1.1, 0.012)
+material = SubResource("DeepShadow")
