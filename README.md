@@ -7,6 +7,8 @@ Godot 4.xで作る、一人称視点の静かな心理ホラー。設計資料�
 - [`08_godot_architecture.md`](tonari_no_heya_design_v0.1/08_godot_architecture.md) — 使用技術、実行時構成、責務、signal、状態、描画、音響、検証範囲
 - [`runtime_architecture.svg`](tonari_no_heya_design_v0.1/diagrams/runtime_architecture.svg) — 実行時コンポーネントとデータフロー
 - [`day1_state_flow.svg`](tonari_no_heya_design_v0.1/diagrams/day1_state_flow.svg) — 1日目の必須・任意経路と復元条件
+- [`12_indie_game_development_guide.md`](tonari_no_heya_design_v0.1/12_indie_game_development_guide.md) — 個人ゲーム開発の環境、手法、テスト、release、保守と本作の比較
+- [`indie_game_lifecycle.svg`](tonari_no_heya_design_v0.1/diagrams/indie_game_lifecycle.svg) — 企画から保守までの開発ライフサイクル
 
 ## 必要環境
 

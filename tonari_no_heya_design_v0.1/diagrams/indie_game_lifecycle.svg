@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">個人ゲーム開発のライフサイクルと『となりの部屋』の現在地</title>
+  <desc id="desc">企画から試作、縦切り、制作、Alpha、Beta、Release、保守までの流れと継続作業、現在地を示す図</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#09111f"/>
+      <stop offset="1" stop-color="#171029"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#000" flood-opacity=".3"/>
+    </filter>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L10,3.5 z" fill="#93c5fd"/>
+    </marker>
+    <marker id="feedbackArrow" markerWidth="11" markerHeight="11" refX="9" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L10,3.5 z" fill="#c4b5fd"/>
+    </marker>
+    <style>
+      text { font-family: system-ui, -apple-system, "Noto Sans JP", sans-serif; fill: #eef2ff; }
+      .title { font-size: 31px; font-weight: 760; }
+      .subtitle { font-size: 15px; fill: #a5b4fc; }
+      .stage { font-size: 20px; font-weight: 750; }
+      .purpose { font-size: 14px; fill: #dbeafe; }
+      .gate { font-size: 12px; fill: #fde68a; }
+      .small { font-size: 12px; fill: #cbd5e1; }
+      .section { font-size: 18px; font-weight: 720; }
+      .flow { fill: none; stroke: #93c5fd; stroke-width: 3; marker-end: url(#arrow); }
+      .feedback { fill: none; stroke: #c4b5fd; stroke-width: 2.5; stroke-dasharray: 9 7; marker-end: url(#feedbackArrow); }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+  <circle cx="1510" cy="60" r="250" fill="#312e81" opacity=".13"/>
+  <circle cx="100" cy="930" r="270" fill="#064e3b" opacity=".10"/>
+
+  <text x="62" y="58" class="title">個人ゲーム開発のライフサイクル</text>
+  <text x="62" y="86" class="subtitle">各段階の出口条件を満たし、観察とテストの結果を前工程へ戻す。現在地は「1日目の技術経路を内部検証」。</text>
+
+  <!-- Row 1 -->
+  <g filter="url(#shadow)">
+    <rect x="62" y="150" width="300" height="170" rx="20" fill="#17324d" stroke="#60a5fa" stroke-width="2"/>
+    <text x="88" y="188" class="stage">1. 企画</text>
+    <text x="88" y="219" class="purpose">体験・対象・範囲・riskを定義</text>
+    <text x="88" y="247" class="small">一文pitch / 体験の柱 / 作らないもの</text>
+    <rect x="88" y="270" width="248" height="32" rx="9" fill="#2c2b27" stroke="#fbbf24"/>
+    <text x="212" y="291" text-anchor="middle" class="gate">出口：1枚企画で判断できる</text>
+
+    <rect x="432" y="150" width="300" height="170" rx="20" fill="#17324d" stroke="#60a5fa" stroke-width="2"/>
+    <text x="458" y="188" class="stage">2. 試作</text>
+    <text x="458" y="219" class="purpose">最大の不確実性を安く検証</text>
+    <text x="458" y="247" class="small">操作 / 技術 / 制作量 / 市場・権利</text>
+    <rect x="458" y="270" width="248" height="32" rx="9" fill="#2c2b27" stroke="#fbbf24"/>
+    <text x="582" y="291" text-anchor="middle" class="gate">出口：致命的riskが分かる</text>
+
+    <rect x="802" y="134" width="326" height="202" rx="20" fill="#123b3b" stroke="#2dd4bf" stroke-width="3"/>
+    <text x="828" y="172" class="stage">3. 縦切り</text>
+    <text x="828" y="203" class="purpose">完成品を代表する短い区間</text>
+    <text x="828" y="231" class="small">描画 / 音 / UI / 進行を一緒に評価</text>
+    <rect x="828" y="254" width="274" height="32" rx="9" fill="#2c2b27" stroke="#fbbf24"/>
+    <text x="965" y="275" text-anchor="middle" class="gate">出口：初見者が体験を評価できる</text>
+    <rect x="828" y="300" width="274" height="24" rx="12" fill="#0f766e"/>
+    <text x="965" y="317" text-anchor="middle" class="small" style="font-weight:700; fill:#ecfeff">M2：1日目の技術経路を内部検証</text>
+
+    <rect x="1198" y="150" width="300" height="170" rx="20" fill="#17324d" stroke="#60a5fa" stroke-width="2"/>
+    <text x="1224" y="188" class="stage">4. 制作</text>
+    <text x="1224" y="219" class="purpose">成立した手法でcontentを増やす</text>
+    <text x="1224" y="247" class="small">asset pipeline / milestone / 回帰test</text>
+    <rect x="1224" y="270" width="248" height="32" rx="9" fill="#2c2b27" stroke="#fbbf24"/>
+    <text x="1348" y="291" text-anchor="middle" class="gate">出口：全内容が一度は動く</text>
+  </g>
+
+  <path class="flow" d="M362 235 L422 235"/>
+  <path class="flow" d="M732 235 L792 235"/>
+  <path class="flow" d="M1128 235 L1188 235"/>
+  <path class="flow" d="M1348 320 L1348 420"/>
+
+  <!-- Row 2, reverse -->
+  <g filter="url(#shadow)">
+    <rect x="1198" y="430" width="300" height="170" rx="20" fill="#3d263b" stroke="#f472b6" stroke-width="2"/>
+    <text x="1224" y="468" class="stage">5. Alpha</text>
+    <text x="1224" y="499" class="purpose">最初から最後まで通す</text>
+    <text x="1224" y="527" class="small">feature complete / 詰み・crash除去</text>
+    <rect x="1224" y="550" width="248" height="32" rx="9" fill="#2c2b27" stroke="#fbbf24"/>
+    <text x="1348" y="571" text-anchor="middle" class="gate">出口：endingまで完走</text>
+
+    <rect x="828" y="430" width="300" height="170" rx="20" fill="#3d263b" stroke="#f472b6" stroke-width="2"/>
+    <text x="854" y="468" class="stage">6. Beta / RC</text>
+    <text x="854" y="499" class="purpose">公開品質へ絞り込む</text>
+    <text x="854" y="527" class="small">実機 / 性能 / 権利 / 回帰 / 配布物</text>
+    <rect x="854" y="550" width="248" height="32" rx="9" fill="#2c2b27" stroke="#fbbf24"/>
+    <text x="978" y="571" text-anchor="middle" class="gate">出口：release checklist合格</text>
+
+    <rect x="458" y="430" width="300" height="170" rx="20" fill="#483914" stroke="#fbbf24" stroke-width="2"/>
+    <text x="484" y="468" class="stage">7. Release</text>
+    <text x="484" y="499" class="purpose">識別可能なartifactを公開</text>
+    <text x="484" y="527" class="small">version / tag / store / rollback</text>
+    <rect x="484" y="550" width="248" height="32" rx="9" fill="#2c2b27" stroke="#fbbf24"/>
+    <text x="608" y="571" text-anchor="middle" class="gate">出口：配布とsupportを開始</text>
+
+    <rect x="62" y="430" width="326" height="170" rx="20" fill="#30245a" stroke="#a78bfa" stroke-width="2"/>
+    <text x="88" y="468" class="stage">8. 保守</text>
+    <text x="88" y="499" class="purpose">報告 → 再現 → 修正 → patch</text>
+    <text x="88" y="527" class="small">save互換 / changelog / rollback / 終了方針</text>
+    <rect x="88" y="550" width="274" height="32" rx="9" fill="#2c2b27" stroke="#fbbf24"/>
+    <text x="225" y="571" text-anchor="middle" class="gate">出口：改善または保守終了を判断</text>
+  </g>
+
+  <path class="flow" d="M1198 515 L1138 515"/>
+  <path class="flow" d="M828 515 L768 515"/>
+  <path class="flow" d="M458 515 L398 515"/>
+
+  <!-- Feedback -->
+  <path class="feedback" d="M110 430 C20 355 20 160 52 160"/>
+  <rect x="28" y="337" width="166" height="40" rx="10" fill="#1d1935" stroke="#a78bfa"/>
+  <text x="111" y="362" text-anchor="middle" class="small">報告・観察を企画へ戻す</text>
+
+  <path class="feedback" d="M978 430 C978 375 965 370 965 346"/>
+  <rect x="1000" y="360" width="220" height="40" rx="10" fill="#1d1935" stroke="#a78bfa"/>
+  <text x="1110" y="385" text-anchor="middle" class="small">Beta結果で縦切り・scopeを再確認</text>
+
+  <!-- Continuous practices -->
+  <g filter="url(#shadow)">
+    <rect x="62" y="668" width="1436" height="174" rx="22" fill="#151f31" stroke="#475569" stroke-width="2"/>
+    <text x="88" y="705" class="section">全段階で続ける仕事</text>
+
+    <rect x="88" y="730" width="238" height="82" rx="14" fill="#243047" stroke="#64748b"/>
+    <text x="207" y="758" text-anchor="middle" class="purpose">Version管理・Backup</text>
+    <text x="207" y="784" text-anchor="middle" class="small">小さなcommit / remote / tag</text>
+
+    <rect x="348" y="730" width="238" height="82" rx="14" fill="#243047" stroke="#64748b"/>
+    <text x="467" y="758" text-anchor="middle" class="purpose">Test・Playtest</text>
+    <text x="467" y="784" text-anchor="middle" class="small">自動回帰 + 実機 + 初見観察</text>
+
+    <rect x="608" y="730" width="238" height="82" rx="14" fill="#243047" stroke="#64748b"/>
+    <text x="727" y="758" text-anchor="middle" class="purpose">Document・Decision</text>
+    <text x="727" y="784" text-anchor="middle" class="small">現状 / 理由 / 未決 / 終了条件</text>
+
+    <rect x="868" y="730" width="238" height="82" rx="14" fill="#243047" stroke="#64748b"/>
+    <text x="987" y="758" text-anchor="middle" class="purpose">Asset・License</text>
+    <text x="987" y="784" text-anchor="middle" class="small">source / import / 権利 / credit</text>
+
+    <rect x="1128" y="730" width="344" height="82" rx="14" fill="#243047" stroke="#64748b"/>
+    <text x="1300" y="758" text-anchor="middle" class="purpose">Build識別・診断</text>
+    <text x="1300" y="784" text-anchor="middle" class="small">version / log / artifact / rollback</text>
+  </g>
+
+  <!-- Current gap -->
+  <g>
+    <rect x="62" y="882" width="1436" height="64" rx="15" fill="#10282a" stroke="#2dd4bf"/>
+    <text x="88" y="907" class="purpose" style="font-weight:700">『となりの部屋』の次のgate</text>
+    <text x="88" y="932" class="small">回帰testをrepositoryへ保存 → target OSへexport → clean PCで起動 → 初見playtest → 結果でM2とbacklogを更新</text>
+  </g>
+
+  <g>
+    <line x1="1190" y1="970" x2="1248" y2="970" class="flow"/>
+    <text x="1260" y="975" class="small">主進行</text>
+    <line x1="1350" y1="970" x2="1408" y2="970" class="feedback"/>
+    <text x="1420" y="975" class="small">feedback loop</text>
+  </g>
+</svg>
