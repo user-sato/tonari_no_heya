@@ -2,6 +2,12 @@
 
 Godot 4.xで作る、一人称視点の静かな心理ホラー。設計資料は [`tonari_no_heya_design_v0.1/`](tonari_no_heya_design_v0.1/) を参照してください。
 
+## 技術・アーキテクチャ資料
+
+- [`08_godot_architecture.md`](tonari_no_heya_design_v0.1/08_godot_architecture.md) — 使用技術、実行時構成、責務、signal、状態、描画、音響、検証範囲
+- [`runtime_architecture.svg`](tonari_no_heya_design_v0.1/diagrams/runtime_architecture.svg) — 実行時コンポーネントとデータフロー
+- [`day1_state_flow.svg`](tonari_no_heya_design_v0.1/diagrams/day1_state_flow.svg) — 1日目の必須・任意経路と復元条件
+
 ## 必要環境
 
 - Godot Engine 4.x（Godot 4.6.3で検証済み）
@@ -42,7 +48,7 @@ godot4 --path .
 - 低解像度映像はnearest（最近傍）拡大し、ordered ditheringと固定のごく弱い微粒子を加えます。
 - UIは低解像度化せず、ネイティブ解像度で表示します。
 - 1日目の203号室は青紫の環境光に弱い暖色の室内灯を重ね、生活中の簡素な家具を置いています。
-- Xvfb＋OpenGL llvmpipeで実GPU画像を取得し、照明・低解像度表示・ditheringをレビュー済みです。実マウス操作感と入口付近の手動歩行体感は未確認です。
+- Xvfb＋OpenGL llvmpipeで実行時画像を取得し、照明・低解像度表示・ditheringをレビュー済みです。llvmpipeはソフトウェアレンダラーのため、実GPUでの最終確認は残っています。
 
 ## M0の範囲
 
@@ -72,4 +78,4 @@ godot4 --headless --path . --quit-after 30
 godot4 --headless --path . --check-only --script res://scripts/player/player_controller.gd
 ```
 
-Godot 4.6の統合検証では、メインシーン、M1の操作・郵便・文書・メモ・202扉調査に加え、M2の1日目進行と就寝後のノック応答・暗転終了を確認済みです。Godot実UI画像も取得して表示を確認しています。Xvfb＋OpenGL llvmpipeで取得した画像では照明・低解像度表示・ditheringをレビュー済みです。実マウス操作感と入口付近の手動歩行体感は未確認です。
+Godot 4.6の統合検証では、メインシーン、M1の操作・郵便・文書・メモ・202扉調査に加え、M2の1日目進行と就寝後のノック応答・暗転終了を確認済みです。Godot実UI画像も取得して表示を確認しています。Xvfb＋OpenGL llvmpipeで取得した画像では照明・低解像度表示・ditheringをレビュー済みです。実GPU・実マウス操作・実音響機器での最終確認は未実施です。

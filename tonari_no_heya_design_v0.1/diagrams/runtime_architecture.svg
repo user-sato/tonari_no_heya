@@ -1,0 +1,215 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1060" viewBox="0 0 1440 1060" role="img" aria-labelledby="title desc">
+  <title id="title">となりの部屋 M2 実行時アーキテクチャ</title>
+  <desc id="desc">Godotの入力、低解像度3D、進行Director、HUD、GameState、JSONの接続を示す図</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1020"/>
+      <stop offset="1" stop-color="#15102a"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#000" flood-opacity="0.28"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#cbd5e1"/>
+    </marker>
+    <marker id="arrowSignal" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#67e8f9"/>
+    </marker>
+    <marker id="arrowData" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#c084fc"/>
+    </marker>
+    <style>
+      text { font-family: system-ui, -apple-system, "Noto Sans JP", sans-serif; fill: #eef2ff; }
+      .title { font-size: 30px; font-weight: 750; }
+      .subtitle { font-size: 15px; fill: #a5b4fc; }
+      .section { font-size: 17px; font-weight: 700; letter-spacing: .04em; }
+      .box-title { font-size: 16px; font-weight: 700; }
+      .box-text { font-size: 13px; fill: #dbeafe; }
+      .small { font-size: 12px; fill: #cbd5e1; }
+      .api { fill: none; stroke: #cbd5e1; stroke-width: 2; marker-end: url(#arrow); }
+      .signal { fill: none; stroke: #67e8f9; stroke-width: 2.3; stroke-dasharray: 8 6; marker-end: url(#arrowSignal); }
+      .data { fill: none; stroke: #c084fc; stroke-width: 2; marker-end: url(#arrowData); }
+      .ownership { fill: none; stroke: #64748b; stroke-width: 1.5; }
+      .label-bg { fill: #111827; opacity: .92; }
+    </style>
+  </defs>
+
+  <rect width="1440" height="1060" fill="url(#bg)"/>
+  <circle cx="1330" cy="80" r="190" fill="#312e81" opacity=".12"/>
+  <circle cx="80" cy="960" r="250" fill="#164e63" opacity=".10"/>
+
+  <text x="58" y="58" class="title">『となりの部屋』M2 実行時アーキテクチャ</text>
+  <text x="58" y="84" class="subtitle">Godot 4.6.3 / GDScript / Compatibility renderer　—　実線: 入力・API・制御　破線: signal　紫: data read</text>
+
+  <!-- Input -->
+  <g filter="url(#shadow)">
+    <rect x="58" y="120" width="1324" height="82" rx="18" fill="#172033" stroke="#475569"/>
+    <text x="82" y="149" class="section">INPUT</text>
+    <rect x="202" y="137" width="180" height="44" rx="11" fill="#25324a" stroke="#64748b"/>
+    <text x="292" y="157" text-anchor="middle" class="box-title">WASD + Mouse</text>
+    <text x="292" y="174" text-anchor="middle" class="small">移動・視点</text>
+    <rect x="407" y="137" width="180" height="44" rx="11" fill="#25324a" stroke="#64748b"/>
+    <text x="497" y="157" text-anchor="middle" class="box-title">E</text>
+    <text x="497" y="174" text-anchor="middle" class="small">調べる／壁を叩く</text>
+    <rect x="612" y="137" width="180" height="44" rx="11" fill="#25324a" stroke="#64748b"/>
+    <text x="702" y="157" text-anchor="middle" class="box-title">Tab / Esc</text>
+    <text x="702" y="174" text-anchor="middle" class="small">メモ・overlay</text>
+    <rect x="817" y="137" width="180" height="44" rx="11" fill="#25324a" stroke="#64748b"/>
+    <text x="907" y="157" text-anchor="middle" class="box-title">F8</text>
+    <text x="907" y="174" text-anchor="middle" class="small">内部解像度</text>
+    <rect x="1022" y="137" width="318" height="44" rx="11" fill="#25324a" stroke="#64748b"/>
+    <text x="1181" y="157" text-anchor="middle" class="box-title">InputMap</text>
+    <text x="1181" y="174" text-anchor="middle" class="small">move / interact / notebook / mouse capture</text>
+  </g>
+
+  <!-- Low res world container -->
+  <g filter="url(#shadow)">
+    <rect x="58" y="240" width="555" height="564" rx="22" fill="#111b31" stroke="#fb7185" stroke-width="2"/>
+    <text x="82" y="274" class="section" fill="#fecdd3">LOW-RES 3D WORLD</text>
+    <text x="82" y="296" class="small">WorldDisplay → WorldView（320×180 / 256×144）</text>
+
+    <rect x="88" y="323" width="495" height="114" rx="14" fill="#243047" stroke="#94a3b8"/>
+    <text x="112" y="350" class="box-title">Player / Head / Camera3D</text>
+    <text x="112" y="374" class="box-text">PlayerController: 移動・重力・マウス視点</text>
+    <rect x="322" y="389" width="237" height="32" rx="9" fill="#164e63" stroke="#67e8f9"/>
+    <text x="440" y="410" text-anchor="middle" class="box-title">InteractionRay（2m）</text>
+
+    <rect x="88" y="465" width="235" height="148" rx="14" fill="#243047" stroke="#94a3b8"/>
+    <text x="112" y="492" class="box-title">ApartmentFloor</text>
+    <text x="112" y="518" class="box-text">Corridor / Room203</text>
+    <text x="112" y="540" class="box-text">Balcony203 / Exterior202</text>
+    <text x="112" y="562" class="box-text">Interactable / Collision</text>
+    <text x="112" y="584" class="box-text">VisitTrigger / RoomLight</text>
+
+    <rect x="348" y="465" width="235" height="148" rx="14" fill="#4a2430" stroke="#fb7185"/>
+    <text x="372" y="492" class="box-title">Day1AudioDirector</text>
+    <text x="372" y="518" class="box-text">AudioStreamWAVを生成</text>
+    <text x="372" y="540" class="box-text">AudioStreamPlayer3D</text>
+    <text x="372" y="562" class="box-text">3打・間隔・音量制御</text>
+    <text x="372" y="584" class="box-text">重複再生を抑止</text>
+
+    <rect x="88" y="642" width="495" height="130" rx="14" fill="#251f42" stroke="#a78bfa"/>
+    <text x="112" y="670" class="box-title">Rendering</text>
+    <text x="112" y="696" class="box-text">SubViewport → nearest拡大 → ordered_dither.gdshader</text>
+    <text x="112" y="720" class="box-text">4×4 Bayer / 32色段階 / 固定微粒子</text>
+    <text x="112" y="744" class="small">LowResolutionViewがF8切替と中央配置を所有</text>
+  </g>
+
+  <!-- Directors -->
+  <g filter="url(#shadow)">
+    <rect x="649" y="240" width="388" height="564" rx="22" fill="#102329" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="673" y="274" class="section" fill="#99f6e4">ORCHESTRATION</text>
+
+    <rect x="679" y="315" width="328" height="178" rx="15" fill="#123b3b" stroke="#2dd4bf"/>
+    <text x="703" y="344" class="box-title">M1Director</text>
+    <text x="703" y="371" class="box-text">郵便・机・郵便文書</text>
+    <text x="703" y="393" class="box-text">202扉・メモ表示</text>
+    <text x="703" y="415" class="box-text">通常overlayの入力lock</text>
+    <text x="703" y="447" class="small">reads: day1_mail.json</text>
+    <text x="703" y="469" class="small">handles: mailbox_203 / desk_mail / door_202</text>
+
+    <rect x="679" y="518" width="328" height="246" rx="15" fill="#123b3b" stroke="#2dd4bf"/>
+    <text x="703" y="547" class="box-title">Day1Sequence</text>
+    <text x="703" y="574" class="box-text">初回ノックとoverlay待機</text>
+    <text x="703" y="596" class="box-text">契約 → 電話 → 就寝</text>
+    <text x="703" y="618" class="box-text">任意ベランダ異変</text>
+    <text x="703" y="640" class="box-text">3回 → E → 3回 → 3回</text>
+    <text x="703" y="662" class="box-text">入力lock・復元・終了</text>
+    <text x="703" y="696" class="small">reads: day1_contract.json</text>
+    <text x="703" y="718" class="small">controls: HUD / Player / Level / Audio</text>
+    <text x="703" y="740" class="small">Day2へは遷移しない</text>
+  </g>
+
+  <!-- State and UI -->
+  <g filter="url(#shadow)">
+    <rect x="1073" y="240" width="309" height="564" rx="22" fill="#252012" stroke="#fbbf24" stroke-width="2"/>
+    <text x="1097" y="274" class="section" fill="#fde68a">STATE / UI / DATA</text>
+
+    <rect x="1103" y="315" width="249" height="148" rx="15" fill="#483914" stroke="#fbbf24"/>
+    <text x="1127" y="344" class="box-title">GameState（Autoload）</text>
+    <text x="1127" y="371" class="box-text">day_index = 1</text>
+    <text x="1127" y="393" class="box-text">flags Dictionary</text>
+    <text x="1127" y="415" class="box-text">既読文書 + 初読順</text>
+    <text x="1127" y="441" class="small">メモリのみ・disk saveなし</text>
+
+    <rect x="1103" y="487" width="249" height="152" rx="15" fill="#172554" stroke="#60a5fa"/>
+    <text x="1127" y="516" class="box-title">HUD（CanvasLayer）</text>
+    <text x="1127" y="543" class="box-text">prompt / message</text>
+    <text x="1127" y="565" class="box-text">documents / notebook</text>
+    <text x="1127" y="587" class="box-text">subtitle / fade / day end</text>
+    <text x="1127" y="609" class="small">signals: overlay / document / notebook</text>
+    <text x="1127" y="629" class="small">native resolution・実行時生成</text>
+
+    <rect x="1103" y="663" width="249" height="101" rx="15" fill="#33224d" stroke="#c084fc"/>
+    <text x="1127" y="692" class="box-title">JSON Documents</text>
+    <text x="1127" y="719" class="box-text">day1_mail.json（4）</text>
+    <text x="1127" y="741" class="box-text">day1_contract.json（1）</text>
+  </g>
+
+  <!-- Connections -->
+  <path class="api" d="M292 181 C292 230 270 270 270 323"/>
+  <path class="api" d="M497 181 C497 246 440 292 440 389"/>
+  <path class="api" d="M907 181 C907 215 790 214 540 642"/>
+
+  <path class="signal" d="M559 399 C620 399 630 364 679 364"/>
+  <rect class="label-bg" x="568" y="371" width="105" height="22" rx="5"/>
+  <text x="620" y="386" text-anchor="middle" class="small">interaction</text>
+  <path class="signal" d="M559 412 C620 475 632 573 679 573"/>
+
+  <path class="api" d="M1007 365 C1048 365 1063 365 1103 365"/>
+  <path class="api" d="M1007 404 C1048 445 1060 520 1103 543"/>
+  <path class="api" d="M1007 580 C1048 505 1057 416 1103 416"/>
+  <path class="api" d="M1007 620 C1048 620 1060 587 1103 587"/>
+  <path class="api" d="M1007 662 C1042 662 1055 570 1103 570"/>
+  <path class="api" d="M679 677 C630 677 620 539 583 539"/>
+
+  <path class="signal" d="M1103 438 C1063 438 1050 540 1007 540"/>
+  <rect class="label-bg" x="1018" y="471" width="92" height="22" rx="5"/>
+  <text x="1064" y="486" text-anchor="middle" class="small">flag_changed</text>
+  <path class="signal" d="M1103 605 C1060 605 1045 455 1007 455"/>
+  <path class="signal" d="M1103 565 C1060 565 1055 595 1007 595"/>
+  <rect class="label-bg" x="1015" y="526" width="94" height="22" rx="5"/>
+  <text x="1062" y="541" text-anchor="middle" class="small">HUD signals</text>
+
+  <path class="data" d="M1007 447 C1045 447 1062 704 1103 704"/>
+  <path class="data" d="M1007 698 C1044 698 1060 735 1103 735"/>
+
+  <!-- Output -->
+  <g filter="url(#shadow)">
+    <rect x="58" y="842" width="1324" height="141" rx="20" fill="#172033" stroke="#475569"/>
+    <text x="82" y="876" class="section">COMPOSITE OUTPUT</text>
+    <rect x="300" y="865" width="260" height="75" rx="13" fill="#4a2430" stroke="#fb7185"/>
+    <text x="430" y="895" text-anchor="middle" class="box-title">低解像度3D</text>
+    <text x="430" y="918" text-anchor="middle" class="small">nearest + dither + grain</text>
+    <text x="595" y="908" class="title">+</text>
+    <rect x="650" y="865" width="280" height="75" rx="13" fill="#172554" stroke="#60a5fa"/>
+    <text x="790" y="895" text-anchor="middle" class="box-title">ネイティブ解像度HUD</text>
+    <text x="790" y="918" text-anchor="middle" class="small">文字・文書・fade</text>
+    <path class="api" d="M950 902 L1080 902"/>
+    <rect x="1090" y="865" width="240" height="75" rx="13" fill="#25324a" stroke="#a5b4fc"/>
+    <text x="1210" y="895" text-anchor="middle" class="box-title">1280×720 Window</text>
+    <text x="1210" y="918" text-anchor="middle" class="small">Compatibility renderer</text>
+  </g>
+
+  <path class="ownership" d="M335 772 L335 830 L430 830 L430 865"/>
+  <path class="ownership" d="M1227 639 L1227 830 L790 830 L790 865"/>
+
+  <!-- Legend -->
+  <g>
+    <line x1="58" y1="1023" x2="112" y2="1023" class="api"/>
+    <text x="124" y="1028" class="small">入力／API／制御</text>
+    <line x1="270" y1="1023" x2="324" y2="1023" class="signal"/>
+    <text x="336" y="1028" class="small">signal</text>
+    <line x1="400" y1="1023" x2="444" y2="1023" class="data"/>
+    <text x="456" y="1028" class="small">data read</text>
+    <rect x="555" y="1011" width="18" height="18" rx="4" fill="#123b3b" stroke="#2dd4bf"/>
+    <text x="582" y="1028" class="small">進行</text>
+    <rect x="650" y="1011" width="18" height="18" rx="4" fill="#483914" stroke="#fbbf24"/>
+    <text x="677" y="1028" class="small">状態</text>
+    <rect x="745" y="1011" width="18" height="18" rx="4" fill="#172554" stroke="#60a5fa"/>
+    <text x="772" y="1028" class="small">UI</text>
+    <rect x="825" y="1011" width="18" height="18" rx="4" fill="#4a2430" stroke="#fb7185"/>
+    <text x="852" y="1028" class="small">描画・音</text>
+    <text x="1070" y="1028" class="small">M2 / commit fc2b5cc</text>
+  </g>
+</svg>

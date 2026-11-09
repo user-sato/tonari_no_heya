@@ -1,0 +1,196 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="980" viewBox="0 0 1600 980" role="img" aria-labelledby="title desc">
+  <title id="title">となりの部屋 1日目状態遷移</title>
+  <desc id="desc">郵便回収から同数のノック返答と一日目終了までの必須経路、任意ベランダ経路、復元条件を示す図</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a1020"/>
+      <stop offset="1" stop-color="#171027"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#000" flood-opacity=".32"/>
+    </filter>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L10,3.5 z" fill="#a7f3d0"/>
+    </marker>
+    <marker id="arrowOptional" markerWidth="11" markerHeight="11" refX="9" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L10,3.5 z" fill="#c4b5fd"/>
+    </marker>
+    <marker id="arrowRestore" markerWidth="11" markerHeight="11" refX="9" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L10,3.5 z" fill="#fbbf24"/>
+    </marker>
+    <style>
+      text { font-family: system-ui, -apple-system, "Noto Sans JP", sans-serif; fill: #eef2ff; }
+      .title { font-size: 31px; font-weight: 760; }
+      .subtitle { font-size: 15px; fill: #a5b4fc; }
+      .step-title { font-size: 17px; font-weight: 720; }
+      .flag { font-size: 13px; fill: #fde68a; font-family: ui-monospace, "SFMono-Regular", monospace; }
+      .detail { font-size: 13px; fill: #dbeafe; }
+      .small { font-size: 12px; fill: #cbd5e1; }
+      .main { fill: none; stroke: #a7f3d0; stroke-width: 3; marker-end: url(#arrow); }
+      .optional { fill: none; stroke: #c4b5fd; stroke-width: 2.5; stroke-dasharray: 9 7; marker-end: url(#arrowOptional); }
+      .restore { fill: none; stroke: #fbbf24; stroke-width: 2.3; stroke-dasharray: 6 6; marker-end: url(#arrowRestore); }
+      .note-bg { fill: #111827; opacity: .94; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="980" fill="url(#bg)"/>
+  <circle cx="1510" cy="50" r="230" fill="#312e81" opacity=".13"/>
+  <circle cx="80" cy="930" r="260" fill="#064e3b" opacity=".10"/>
+
+  <text x="64" y="58" class="title">『となりの部屋』1日目 状態遷移</text>
+  <text x="64" y="86" class="subtitle">必須経路は緑、任意経路は紫、同一実行内の復元は黄。Day2へは遷移しない。</text>
+
+  <!-- Row 1 -->
+  <g filter="url(#shadow)">
+    <rect x="64" y="148" width="180" height="124" rx="17" fill="#183044" stroke="#60a5fa"/>
+    <text x="154" y="181" text-anchor="middle" class="step-title">開始</text>
+    <text x="154" y="209" text-anchor="middle" class="detail">共用廊下</text>
+    <text x="154" y="231" text-anchor="middle" class="detail">day_index = 1</text>
+    <text x="154" y="253" text-anchor="middle" class="small">203入口前</text>
+
+    <rect x="304" y="148" width="190" height="124" rx="17" fill="#123b3b" stroke="#2dd4bf"/>
+    <text x="399" y="181" text-anchor="middle" class="step-title">郵便を取る</text>
+    <text x="399" y="209" text-anchor="middle" class="flag">mail_collected</text>
+    <text x="399" y="235" text-anchor="middle" class="detail">mailbox_203</text>
+    <text x="399" y="256" text-anchor="middle" class="small">机を有効化</text>
+
+    <rect x="554" y="148" width="210" height="124" rx="17" fill="#123b3b" stroke="#2dd4bf"/>
+    <text x="659" y="181" text-anchor="middle" class="step-title">机に置いて読む</text>
+    <text x="659" y="209" text-anchor="middle" class="flag">mail_placed</text>
+    <text x="659" y="235" text-anchor="middle" class="detail">郵便4文書を表示</text>
+    <text x="659" y="256" text-anchor="middle" class="small">既読はメモへ登録</text>
+
+    <rect x="824" y="132" width="238" height="156" rx="17" fill="#26214a" stroke="#a78bfa"/>
+    <text x="943" y="165" text-anchor="middle" class="step-title">overlay待機</text>
+    <text x="943" y="193" text-anchor="middle" class="detail">閉じてから1.2秒</text>
+    <text x="943" y="216" text-anchor="middle" class="detail">再表示でtimerやり直し</text>
+    <text x="943" y="239" text-anchor="middle" class="detail">ノック中の再表示も考慮</text>
+    <text x="943" y="265" text-anchor="middle" class="small">instance内の待機状態</text>
+
+    <rect x="1122" y="148" width="200" height="124" rx="17" fill="#4a2430" stroke="#fb7185"/>
+    <text x="1222" y="181" text-anchor="middle" class="step-title">初回ノック ×3</text>
+    <text x="1222" y="209" text-anchor="middle" class="flag">first_knock_heard</text>
+    <text x="1222" y="235" text-anchor="middle" class="detail">共有壁の3D音響</text>
+    <text x="1222" y="256" text-anchor="middle" class="small">202確認を案内</text>
+
+    <rect x="1360" y="148" width="176" height="124" rx="17" fill="#123b3b" stroke="#2dd4bf"/>
+    <text x="1448" y="181" text-anchor="middle" class="step-title">202扉を調査</text>
+    <text x="1448" y="211" text-anchor="middle" class="flag" style="font-size:11px">neighbor_door_checked</text>
+    <text x="1448" y="242" text-anchor="middle" class="detail">初回ノック後のみ</text>
+    <text x="1448" y="261" text-anchor="middle" class="small">返事なし</text>
+  </g>
+
+  <path class="main" d="M244 210 L294 210"/>
+  <text x="269" y="196" text-anchor="middle" class="small">E</text>
+  <path class="main" d="M494 210 L544 210"/>
+  <text x="519" y="196" text-anchor="middle" class="small">E</text>
+  <path class="main" d="M764 210 L814 210"/>
+  <path class="main" d="M1062 210 L1112 210"/>
+  <path class="main" d="M1322 210 L1350 210"/>
+
+  <!-- Pre-knock optional door check -->
+  <path class="optional" d="M943 288 C943 323 1025 327 1075 327"/>
+  <rect class="note-bg" x="1085" y="304" width="192" height="46" rx="10"/>
+  <text x="1181" y="323" text-anchor="middle" class="small">ノック前に202を調べる</text>
+  <text x="1181" y="341" text-anchor="middle" class="flag">door_202_examined</text>
+
+  <!-- Row 2, reversed -->
+  <path class="main" d="M1448 272 L1448 408"/>
+
+  <g filter="url(#shadow)">
+    <rect x="1334" y="418" width="202" height="130" rx="17" fill="#123b3b" stroke="#2dd4bf"/>
+    <text x="1435" y="451" text-anchor="middle" class="step-title">契約書</text>
+    <text x="1435" y="479" text-anchor="middle" class="flag">contract_found</text>
+    <text x="1435" y="505" text-anchor="middle" class="detail">203号室・管理会社</text>
+    <text x="1435" y="527" text-anchor="middle" class="small">contract_file</text>
+
+    <rect x="1072" y="418" width="202" height="130" rx="17" fill="#123b3b" stroke="#2dd4bf"/>
+    <text x="1173" y="451" text-anchor="middle" class="step-title">管理会社へ連絡</text>
+    <text x="1173" y="479" text-anchor="middle" class="flag">contact_attempted</text>
+    <text x="1173" y="505" text-anchor="middle" class="detail">営業時間外応答</text>
+    <text x="1173" y="527" text-anchor="middle" class="small">phone_call</text>
+
+    <rect x="810" y="400" width="202" height="166" rx="17" fill="#4a2430" stroke="#fb7185"/>
+    <text x="911" y="433" text-anchor="middle" class="step-title">就寝開始</text>
+    <text x="911" y="461" text-anchor="middle" class="flag">sleep_sequence_started</text>
+    <text x="911" y="487" text-anchor="middle" class="detail">入力・物理・衝突lock</text>
+    <text x="911" y="509" text-anchor="middle" class="detail">消灯・寝床視点へ</text>
+    <text x="911" y="531" text-anchor="middle" class="detail">Tabを無効化</text>
+    <text x="911" y="552" text-anchor="middle" class="small">bed_sleep</text>
+
+    <rect x="548" y="418" width="202" height="130" rx="17" fill="#4a2430" stroke="#fb7185"/>
+    <text x="649" y="451" text-anchor="middle" class="step-title">隣から3回</text>
+    <text x="649" y="479" text-anchor="middle" class="detail">quiet / dry knock</text>
+    <text x="649" y="505" text-anchor="middle" class="detail">字幕を併記</text>
+    <text x="649" y="527" text-anchor="middle" class="small">E promptを表示</text>
+
+    <rect x="286" y="418" width="202" height="130" rx="17" fill="#183044" stroke="#60a5fa"/>
+    <text x="387" y="451" text-anchor="middle" class="step-title">Eを1回入力</text>
+    <text x="387" y="479" text-anchor="middle" class="detail">プレイヤーが3回叩く</text>
+    <text x="387" y="505" text-anchor="middle" class="detail">連打は無視</text>
+    <text x="387" y="527" text-anchor="middle" class="small">KNOCK_COUNT = 3</text>
+
+    <rect x="64" y="400" width="162" height="166" rx="17" fill="#483914" stroke="#fbbf24" stroke-width="2"/>
+    <text x="145" y="433" text-anchor="middle" class="step-title">同じ3回が返る</text>
+    <text x="145" y="461" text-anchor="middle" class="flag">day1_complete</text>
+    <text x="145" y="487" text-anchor="middle" class="detail">返答音の完了後</text>
+    <text x="145" y="509" text-anchor="middle" class="detail">fade to black</text>
+    <text x="145" y="531" text-anchor="middle" class="detail">「一日目 終了」</text>
+    <text x="145" y="552" text-anchor="middle" class="small">day_indexは1のまま</text>
+  </g>
+
+  <path class="main" d="M1334 483 L1284 483"/>
+  <path class="main" d="M1072 483 L1022 483"/>
+  <path class="main" d="M810 483 L760 483"/>
+  <path class="main" d="M548 483 L498 483"/>
+  <path class="main" d="M286 483 L236 483"/>
+
+  <!-- Optional balcony -->
+  <g filter="url(#shadow)">
+    <rect x="1112" y="638" width="366" height="134" rx="18" fill="#322452" stroke="#c4b5fd" stroke-width="2"/>
+    <text x="1295" y="671" text-anchor="middle" class="step-title">任意：ベランダの違和感</text>
+    <text x="1295" y="699" text-anchor="middle" class="flag">balcony_visited</text>
+    <text x="1295" y="722" text-anchor="middle" class="flag">balcony_oddity_seen</text>
+    <text x="1295" y="744" text-anchor="middle" class="small">VisitTrigger進入でvisited（契約前も可）</text>
+    <text x="1295" y="762" text-anchor="middle" class="small">契約後に影が出現。可視中の進入から2.5秒後に消失</text>
+  </g>
+  <path class="optional" d="M1435 548 C1435 590 1375 608 1340 628"/>
+  <path class="optional" d="M1190 638 C1125 600 1132 576 1173 558"/>
+
+  <!-- Restore -->
+  <g filter="url(#shadow)">
+    <rect x="64" y="638" width="948" height="196" rx="20" fill="#2d2818" stroke="#fbbf24"/>
+    <text x="90" y="674" class="step-title">同一実行内のシーン再生成</text>
+
+    <rect x="92" y="698" width="394" height="104" rx="14" fill="#3d3217" stroke="#f59e0b"/>
+    <text x="289" y="728" text-anchor="middle" class="flag">sleep_sequence_started = true</text>
+    <text x="289" y="754" text-anchor="middle" class="detail">かつ day1_complete = false</text>
+    <text x="289" y="780" text-anchor="middle" class="small">就寝演出の先頭から安全に再開</text>
+
+    <rect x="554" y="698" width="426" height="104" rx="14" fill="#3d3217" stroke="#f59e0b"/>
+    <text x="767" y="728" text-anchor="middle" class="flag">day1_complete = true</text>
+    <text x="767" y="754" text-anchor="middle" class="detail">操作lock・消灯・完全暗転</text>
+    <text x="767" y="780" text-anchor="middle" class="small">終了画面を即時復元</text>
+  </g>
+
+  <path class="restore" d="M486 750 C620 660 785 610 875 566"/>
+  <path class="restore" d="M554 750 C390 690 230 620 164 566"/>
+
+  <!-- Notes -->
+  <g>
+    <rect x="64" y="878" width="1472" height="54" rx="14" fill="#111827" stroke="#334155"/>
+    <text x="90" y="901" class="small">保存境界：</text>
+    <text x="172" y="901" class="small">GameStateはメモリ上のみ。タイマー途中経過・ディスクsave・プロセス再起動後のloadは未対応。</text>
+    <text x="90" y="921" class="small">不変条件：</text>
+    <text x="172" y="921" class="small">ベランダは任意／202内部は作らない／最後の返答数はプレイヤーと同じ3回／Day2へ進めない。</text>
+  </g>
+
+  <g>
+    <line x1="1070" y1="842" x2="1124" y2="842" class="main"/>
+    <text x="1136" y="847" class="small">必須</text>
+    <line x1="1210" y1="842" x2="1264" y2="842" class="optional"/>
+    <text x="1276" y="847" class="small">任意</text>
+    <line x1="1350" y1="842" x2="1404" y2="842" class="restore"/>
+    <text x="1416" y="847" class="small">復元</text>
+  </g>
+</svg>

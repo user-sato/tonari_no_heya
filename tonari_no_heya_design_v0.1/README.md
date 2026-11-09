@@ -15,7 +15,9 @@
 | `05_events_and_state.md` | イベント遷移、状態、セーブ、実装契約 |
 | `06_puzzles_and_clues.md` | 3日間の謎解き、ヒント・詰み防止 |
 | `07_art_audio_direction.md` | ローポリ表現、音、ライティング、演出 |
-| `08_godot_architecture.md` | シーン構成、コード分割、データ設計 |
+| `08_godot_architecture.md` | M2時点の使用技術、実行時構成、責務、状態、描画、音響、今後の境界 |
+| `diagrams/runtime_architecture.svg` | 実行時コンポーネントとデータフロー |
+| `diagrams/day1_state_flow.svg` | 1日目の必須・任意経路と復元条件 |
 | `09_asset_and_task_backlog.md` | 必要アセット、開発順、優先順位 |
 | `10_qa_and_release.md` | テスト項目、Steam公開前の確認 |
 | `11_decision_log.md` | 決定事項・未決事項・設計変更履歴 |
@@ -31,4 +33,4 @@
 - **実装上の提案**：寸法、配置、入力キー、ノード名、状態名、各イベントの正確なタイミング。
 - **未決**：202号室と書類の不一致の最終設定、管理会社への連絡方式、3日目の謎解きの確定台本、点検口の内部物、郵便受けの封筒。
 
-> この資料はゲームの設計書。現時点でゲーム本体やGodotプロジェクトを生成したものではない。
+> このパッケージは初期設計書として作成し、`08_godot_architecture.md`と`11_decision_log.md`はM2実装時点の内容へ更新している。ゲーム本体はリポジトリ直下のGodotプロジェクトを参照する。
